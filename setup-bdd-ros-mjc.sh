@@ -96,4 +96,9 @@ $PIP_CMD install -e "${WS_ROOT}/thirdparty/rdf-utils"
 $PIP_CMD install -e "${WS_ROOT}/thirdparty/bdd-dsl"
 $PIP_CMD install -e "${WS_ROOT}/thirdparty/robbdd"
 $PIP_CMD install -e "${WS_ROOT}/thirdparty/coord-dsl"
+# clean up previous build
+if [ -d "${WS_ROOT}/thirdparty/mj_kdl_wrapper/build" ] ; then
+  rm -rf "${WS_ROOT}/thirdparty/mj_kdl_wrapper/build"
+fi
 $PIP_CMD install -e "${WS_ROOT}/thirdparty/mj_kdl_wrapper"
+mj-kdl-fetch-menagerie  # should be installed into venv with mj_kdl_wrapper
