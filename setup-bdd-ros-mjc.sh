@@ -48,6 +48,7 @@ set_repo_branch () {
 }
 
 set_repo_branch "$WS_ROOT/src/bdd_exec_ros2" "$ROS_VER"
+set_repo_branch "$WS_ROOT/src/bdd_mjc_pickplace_py" "$ROS_VER"
 
 # Setup Python virtual environment
 source "/opt/ros/$ROS_VER/setup.bash"
