@@ -1,6 +1,7 @@
 # RobBDD, ROS 2, MuJoCo Setup Automation
 
-Script for setting up a ROS 2 workspace linked to a Python virtual environment, including the BDD coordinator, MuJoCo behaviour node, and all required dependencies.
+Script for setting up a ROS 2 workspace linked to a Python virtual environment, including the BDD coordinator,
+MuJoCo behaviour node, and all required dependencies.
 
 ## Setup
 
@@ -22,7 +23,12 @@ This setup clones and builds:
 - `robbdd`
 - `rdf-utils`
 
-`scene` and `scenex` language support is provided by `scene-dsl`; `robbdd` now depends on it instead of owning the scene grammar directly.
+Cloning is done using [vcstool](https://github.com/dirk-thomas/vcstool), with dependencies
+listed in the [repos file](./bdd-ros2-mjc.repos). To update cloned repos, run:
+
+```bash
+vcs pull ~/ros_bdd_ws < ./bdd-ros2-mjc.repos
+```
 
 It also fetches the MuJoCo menagerie models for `mj_kdl_wrapper`.
 

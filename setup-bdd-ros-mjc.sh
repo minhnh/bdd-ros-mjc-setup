@@ -93,7 +93,7 @@ source "${WS_ROOT}/install/setup.bash"
 
 # Instal Python dependencies
 $PIP_CMD install pyside6  # for visualization script
-$PIP_CMD install -e "${WS_ROOT}/thirdparty/rdf-utils"
+$PIP_CMD install -e "${WS_ROOT}/thirdparty/rdf-utils[all]"
 $PIP_CMD install -e "${WS_ROOT}/thirdparty/bdd-dsl"
 $PIP_CMD install -e "${WS_ROOT}/thirdparty/scene-dsl"
 $PIP_CMD install -e "${WS_ROOT}/thirdparty/robbdd"
