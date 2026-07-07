@@ -17,9 +17,12 @@ This setup clones and builds:
 - `bdd_ros2_interfaces`
 - `mj_kdl_wrapper`
 - `bdd-dsl`
+- `scene-dsl`
 - `coord-dsl`
 - `robbdd`
 - `rdf-utils`
+
+`scene` and `scenex` language support is provided by `scene-dsl`; `robbdd` now depends on it instead of owning the scene grammar directly.
 
 It also fetches the MuJoCo menagerie models for `mj_kdl_wrapper`.
 

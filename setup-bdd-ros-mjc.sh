@@ -95,6 +95,7 @@ source "${WS_ROOT}/install/setup.bash"
 $PIP_CMD install pyside6  # for visualization script
 $PIP_CMD install -e "${WS_ROOT}/thirdparty/rdf-utils"
 $PIP_CMD install -e "${WS_ROOT}/thirdparty/bdd-dsl"
+$PIP_CMD install -e "${WS_ROOT}/thirdparty/scene-dsl"
 $PIP_CMD install -e "${WS_ROOT}/thirdparty/robbdd"
 $PIP_CMD install -e "${WS_ROOT}/thirdparty/coord-dsl"
 # clean up previous build

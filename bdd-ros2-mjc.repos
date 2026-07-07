@@ -14,6 +14,9 @@ repositories:
   thirdparty/bdd-dsl:
     type: git
     url: https://github.com/minhnh/bdd-dsl.git
+  thirdparty/scene-dsl:
+    type: git
+    url: https://github.com/secorolab/scene-dsl.git
   thirdparty/coord-dsl:
     type: git
     url: https://github.com/minhnh/coord-dsl.git
