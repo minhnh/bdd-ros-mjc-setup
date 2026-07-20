@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Usage: ./setup-bdd-ros-mjc.sh ~/path/to/ros_ws_root
 WS_ROOT=$1
+SETUP_MJC=$2
 
 # expand path
 WS_ROOT=$(realpath -s "$WS_ROOT")
@@ -10,6 +11,12 @@ if [ -z "$WS_ROOT" ]; then
   echo "Optional: ROS_VER=rolling $0 ~/path/to/ros_ws_root"
   exit 1
 fi
+
+# Default: no Mujoco
+if [ -z "$SETUP_MJC" ]; then
+  SETUP_MJC=0
+fi
+echo "Setup Mujoco: $SETUP_MJC"
 
 # Default ROS version: jazzy
 if [ -z "$ROS_VER" ]; then
@@ -23,19 +30,27 @@ if [ ! -d "$WS_ROOT/src" ]; then
 fi
 
 # Clone dependencies using vcs2l
-REPO_FILE="./bdd-ros2-mjc.repos"
-if [ ! -f "$REPO_FILE" ]; then
-  echo "missing repo file '$REPO_FILE'"
-  exit 1
-fi
-
 if ! vcs --version > /dev/null 2>&1 ; then
   echo "vcs command not found, install with sudo apt install python3-vcs2l"
   exit 1
 fi
+BDD_ROS_REPO_FILE="./bdd-ros2.repos"
+if [ ! -f "$BDD_ROS_REPO_FILE" ]; then
+  echo "missing repo file '$BDD_ROS_REPO_FILE'"
+  exit 1
+fi
 echo "cloning dependencies into $WS_ROOT"
-vcs import "$WS_ROOT" < "$REPO_FILE"
+vcs import "$WS_ROOT" < "$BDD_ROS_REPO_FILE"
 touch "$WS_ROOT/thirdparty/COLCON_IGNORE"
+
+if [ $SETUP_MJC = 1 ]; then
+  MJC_REPO_FILE="./mjc-pickplace.repos"
+  if [ ! -f "$MJC_REPO_FILE" ]; then
+    echo "missing Mujoco repo file '$MJC_REPO_FILE'"
+    exit 1
+  fi
+  vcs import "$WS_ROOT" < "$MJC_REPO_FILE"
+fi
 
 # Set ROS versions for relevant repos
 set_repo_branch () {
@@ -98,9 +113,12 @@ $PIP_CMD install -e "${WS_ROOT}/thirdparty/bdd-dsl"
 $PIP_CMD install -e "${WS_ROOT}/thirdparty/scene-dsl"
 $PIP_CMD install -e "${WS_ROOT}/thirdparty/robbdd"
 $PIP_CMD install -e "${WS_ROOT}/thirdparty/coord-dsl"
-# clean up previous build
-if [ -d "${WS_ROOT}/thirdparty/mj_kdl_wrapper/build" ] ; then
-  rm -rf "${WS_ROOT}/thirdparty/mj_kdl_wrapper/build"
+
+if [ $SETUP_MJC = 1 ]; then
+  # clean up previous build
+  if [ -d "${WS_ROOT}/thirdparty/mj_kdl_wrapper/build" ] ; then
+    rm -rf "${WS_ROOT}/thirdparty/mj_kdl_wrapper/build"
+  fi
+  $PIP_CMD install -e "${WS_ROOT}/thirdparty/mj_kdl_wrapper"
+  mj-kdl-fetch-menagerie  # should be installed into venv with mj_kdl_wrapper
 fi
-$PIP_CMD install -e "${WS_ROOT}/thirdparty/mj_kdl_wrapper"
-mj-kdl-fetch-menagerie  # should be installed into venv with mj_kdl_wrapper
