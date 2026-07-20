@@ -23,14 +23,20 @@ This setup clones and builds:
 - `robbdd`
 - `rdf-utils`
 
-Cloning is done using [vcstool](https://github.com/dirk-thomas/vcstool), with dependencies
-listed in the [repos file](./bdd-ros2-mjc.repos). To update cloned repos, run:
+This setup assume ROS2 installed. Additionally, virtual environment setup requires
+[`venv`](https://docs.python.org/3/library/venv.html), and source management requires
+[vcs2l](https://github.com/ros-infrastructure/vcs2l). `vcs2l` is used to clone dependencies
+listed in the [repos file](./bdd-ros2-mjc.repos).
+
+These packages can be installed with `sudo apt install python3-vcs2l python3-venv`.
+
+To update cloned repos, run:
 
 ```bash
 vcs pull ~/ros_bdd_ws < ./bdd-ros2-mjc.repos
 ```
 
-It also fetches the MuJoCo menagerie models for `mj_kdl_wrapper`.
+Executing the script will also fetch MuJoCo menagerie models used by `mj_kdl_wrapper`.
 
 ## Environment activation
 

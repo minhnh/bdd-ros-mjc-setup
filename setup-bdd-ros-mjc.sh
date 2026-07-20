@@ -22,7 +22,7 @@ if [ ! -d "$WS_ROOT/src" ]; then
   mkdir -p "$WS_ROOT/src"
 fi
 
-# Clone dependencies using vcstool
+# Clone dependencies using vcs2l
 REPO_FILE="./bdd-ros2-mjc.repos"
 if [ ! -f "$REPO_FILE" ]; then
   echo "missing repo file '$REPO_FILE'"
@@ -30,7 +30,7 @@ if [ ! -f "$REPO_FILE" ]; then
 fi
 
 if ! vcs --version > /dev/null 2>&1 ; then
-  echo "vcs command not found, install with sudo apt install python3-vcstool"
+  echo "vcs command not found, install with sudo apt install python3-vcs2l"
   exit 1
 fi
 echo "cloning dependencies into $WS_ROOT"
@@ -58,7 +58,7 @@ if uv --version > /dev/null 2>&1 ; then
   VENV_CMD="uv venv"
 else
   PIP_CMD="pip"
-  VENV_CMD="python -m venv"
+  VENV_CMD="python3 -m venv"
 fi
 VENV_DIR="$WS_ROOT/venv"
 if [ -d "$VENV_DIR" ]; then
