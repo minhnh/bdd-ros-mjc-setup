@@ -29,6 +29,16 @@ if [ ! -d "$WS_ROOT/src" ]; then
   mkdir -p "$WS_ROOT/src"
 fi
 
+# Function to set ROS versions for relevant repos
+set_repo_branch () {
+  REPO_DIR="$1"
+  BRANCH="$2"
+  echo "Switching to branch $BRANCH in $REPO_DIR"
+  cd "$REPO_DIR"
+  git checkout "$BRANCH"
+  cd -
+}
+
 # Clone dependencies using vcs2l
 if ! vcs --version > /dev/null 2>&1 ; then
   echo "vcs command not found, install with sudo apt install python3-vcs2l"
@@ -40,8 +50,10 @@ if [ ! -f "$BDD_ROS_REPO_FILE" ]; then
   exit 1
 fi
 echo "cloning dependencies into $WS_ROOT"
+
 vcs import "$WS_ROOT" < "$BDD_ROS_REPO_FILE"
 touch "$WS_ROOT/thirdparty/COLCON_IGNORE"
+set_repo_branch "$WS_ROOT/src/bdd_exec_ros2" "$ROS_VER"
 
 if [ $SETUP_MJC = 1 ]; then
   MJC_REPO_FILE="./mjc-pickplace.repos"
@@ -50,20 +62,9 @@ if [ $SETUP_MJC = 1 ]; then
     exit 1
   fi
   vcs import "$WS_ROOT" < "$MJC_REPO_FILE"
+
+  set_repo_branch "$WS_ROOT/src/bdd_mjc_pickplace_py" "$ROS_VER"
 fi
-
-# Set ROS versions for relevant repos
-set_repo_branch () {
-  REPO_DIR="$1"
-  BRANCH="$2"
-  echo "Switching to branch $BRANCH in $REPO_DIR"
-  cd "$REPO_DIR"
-  git checkout "$BRANCH"
-  cd -
-}
-
-set_repo_branch "$WS_ROOT/src/bdd_exec_ros2" "$ROS_VER"
-set_repo_branch "$WS_ROOT/src/bdd_mjc_pickplace_py" "$ROS_VER"
 
 # Setup Python virtual environment
 source "/opt/ros/$ROS_VER/setup.bash"
